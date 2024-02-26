@@ -1,0 +1,137 @@
+<% include ./partials/header.ejs %>
+
+<div class="bg-sky-200">
+  <div class="bg-red-200 py-5">
+    <a href="/" class=" text-2xl px-4 py-4"><i class="fa-solid fa-arrow-left"></i></a>
+  </div>
+  <% if (cartProducts.length === 0) { %>
+    <p class="font-bold text-2xl text-center py-5">Your cart is empty</p>
+  <% } else { %>
+    <div class=" bg-cyan-100 h-screen">
+      <div class="bg-green-200 h-16 flex justify-between items-center px-5">
+        <h1 class=" font-extrabold text-2xl">Your Shopping Cart</h1>
+        <h1 class=" font-bold text-xl">Total items: <%= cartProducts.length %></h1>
+        <form action="/sort" method="post">
+          <select name="filter" onchange="this.form.submit()" class="mr-5 rounded-full font-semibold text-xl text-center border-blue-700 text-blue-700 bg-cyan-100 border-2">
+            <option value="" disabled selected>Sort By:</option>
+            <option value="ascending">Prices: Low to High</option>
+            <option value="descending">Prices: High to Low</option>
+          </select>
+        </form>
+      </div>
+      <div class="flex gap-2 justify-evenly h-2/3 mx-3 my-4 min-h-0.75">
+        <div class=" w-2/3 py-5">
+          <table class="w-full">
+            <thead>
+              <tr>
+                <th class="text-center text-lg font-bold">Product</th>
+                <th class="text-center text-lg font-bold">Name</th>
+                <th class="text-center text-lg font-bold">Price</th>
+                <th class="text-center text-lg font-bold">Quantity</th>
+                <th class="text-center text-lg font-bold">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (let i = 0; i < cart.products.length; i++) { %>
+                <% const product = cart.products[i]; %>
+                <tr class=" h-26 w-full">
+                  <td class="text-center w-1/6 h-26 py-3">
+                    <div class="w-full h-28">
+                      <img class="shadow-md shadow-black w-full h-full object-cover rounded-xl" src="/images/uploads/<%= product.image %>">
+                    </div>
+                  </td>
+                  <td class="text-center w-2/6 font-semibold"><%= product.name %></td>
+                  <td class="text-center w-1/6 font-semibold">$<%= product.price %></td>
+                  <td class="text-center w-1/6">
+                    <form action="/cart/update?productId=<%= product.product %>" method="post">
+                      <input type="hidden" name="index" value="<%= i %>">
+                      <input type="hidden" name="prod" value="<%= product._id %>">
+                      <select name="quantity" class="py-1 px-1 bg-blue-600 text-white rounded hover:bg-blue-500 transition duration-500" onchange="this.form.submit()">
+                        <option value="" disabled selected><%= product.quantity %></option>
+                        <% for (let j = 1; j <= 10; j++) { %>
+                          <option value="<%= j %>"><%= j %></option>
+                        <% } %>
+                      </select>
+                    </form>
+                  </td>
+                  <td class="text-center w-1/6">
+                    <form action="/cart/delete" method="post">
+                      <input type="hidden" name="productId" value="<%= product.product %>">
+                      <button type="submit" class="bg-blue-600 rounded-lg text-white px-3 py-2 mx-auto">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="5"><hr class="border-black shadow-md shadow-black divide-slate-600"></td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+        <div class="w-1/3 h-full mx-3 my-4 min-h-1/2 border-slate-400 border-2 rounded-[30px] px-3 bg-slate-200 overflow-clip flex-col space-y-4">
+          <h1 class="py-3 px-2 font-extrabold text-xl">Order Summary</h1>
+          <div class="flex gap-2 w-full">
+            <form action="/discount" method="post">
+              <input type="text" name="discount" placeholder="Coupon Code" class=" w-2/3 h-10 rounded-full border-slate-400 border-2 text-center">
+              <button type="submit" class="bg-orange-500 text-white w-1/4 text-center font-semibold rounded-full px-4" onclick="showDiscount()">Apply</button>
+            </form>
+          </div>
+          <div class="discount">
+            
+          </div>
+          <div class="flex justify-between items-center pt-4 pb-3 px-3">
+            <div>
+              <h1 class="text-left">Sub Total</h1>
+              <h1>Delivery Fee</h1>
+              <hr class="border-slate-400 border-b-2">
+              <h1>Total</h1>
+            </div>
+            <div>
+              <% let total = 0; %>
+              <% products.forEach(product=>{ %>
+                <% total += (product.price * product.quantity) %>
+              <% }) %>
+              <% if(discount != null){ %>
+                <h1 class="text-right">$ <%= total %></h1>
+                <% let code1 = codeStr.slice(4,6) %>
+                <h1 class="text-right">-$ <%= code1 %></h1>
+                <h1 class="text-right">-$46</h1>
+                <hr class="border-slate-400 border-b-2">
+                <h1 class="text-right">$ <%= total -code1 -46 %></h1>
+              <% }else{ %>
+                <h1 class="text-right">$ <%= total %></h1>
+                <h1 class="text-right">-$46</h1>
+                <hr class="border-slate-400 border-b-2">
+                <h1 class="text-right">$ <%= total -46 %></h1>
+              <% } %>
+            </div>
+          </div>
+          <button type="submit" class="bg-black text-white w-full rounded-full h-10 mb-4 bottom-0">Proceed To Payment</button>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+  
+  <% let total = 0; %>
+  <% products.forEach(product=>{ %>
+    <% total += (product.price * product.quantity) %>
+  <% }) %>
+<% include ./partials/footer.ejs %>
+<script>
+  function showDiscount(){
+    const discount1=document.querySelector('.discount')
+    const codeStr=`<%= discount %>`
+    const code=`<%= codeStr %>`
+    let code1 = codeStr.slice(4,6)
+    if (code1 == code) {
+      discount1.innerHTML = `<h1 class="text-green-500 text-lg font-semibold">Discount Code Applied Successfully</h1>`;
+    } else {
+      discount1.innerHTML = `<h1 class="text-red-500 text-lg font-semibold">Invalid Discount Code</h1>`;
+    }
+    setTimeout(function() {
+      discount1.innerHTML = ''; // Clear the message after 5 seconds
+  }, 5000);
+  }
+</script>
+<!-- <script src="https://js.stripe.com/v3/"></script> -->

@@ -1,0 +1,92 @@
+<% include ../partials/header.ejs %>
+<div>
+    <h1>Add Product</h1>
+    <form class="flex flex-col mt-5 " action="/upload" method="post" enctype="multipart/form-data">
+        <input class="mt-5 border-black border-2" type="text" placeholder="Name" name="name">
+        <input class="mt-5 border-black border-2" type="number" placeholder="Price (in ₹)" name="price">
+        <input class="mt-5 border-black border-2" type="file" name="file"/>
+
+        <label for="category">Select Category:</label>
+        <select id="category" name="category" onchange="updateSubcategories()">
+        <option value="electronics">Electronics</option>
+        <option value="mensFashion">Men's Fashion</option>
+        <option value="womensFashion">Women's Fashion</option>
+        <option value="kidsFashion">Kids' Fashion</option>
+        <option value="furniture">Furniture</option>
+        <option value="groceries">Groceries</option>
+        </select>
+
+        <label for="subcategory">Select Subcategory:</label>
+        <select id="subcategory" name="subcategory">
+        </select>
+
+        <button type="submit" class="mt-5 bg-blue-500 text-white py-2 px-4 rounded">Submit</button>
+
+        <script>
+        function updateSubcategories() {
+            var categorySelect = document.getElementById('category');
+            var subcategorySelect = document.getElementById('subcategory');
+            var selectedCategory = categorySelect.value;
+
+            // Clear existing options
+            subcategorySelect.innerHTML = '';
+
+            // Add new options based on the selected category
+            switch (selectedCategory) {
+            case 'electronics':
+                addSubcategoryOption('mobiles');
+                addSubcategoryOption('accessories');
+                addSubcategoryOption('cameras');
+                addSubcategoryOption('smartGadgets');
+                addSubcategoryOption('wearables');
+                break;
+            case 'mensFashion':
+                addSubcategoryOption('tshirts');
+                addSubcategoryOption('pants');
+                addSubcategoryOption('formals');
+                addSubcategoryOption('shorts');
+                addSubcategoryOption('shoes');
+                addSubcategoryOption('sneakers');
+                break;
+            case 'womensFashion':
+                addSubcategoryOption('sarees');
+                addSubcategoryOption('kurtis');
+                addSubcategoryOption('jeans');
+                addSubcategoryOption('footwears');
+                addSubcategoryOption('tops');
+                break;
+            case 'kidsFashion':
+                addSubcategoryOption('tshirts');
+                addSubcategoryOption('pants');
+                addSubcategoryOption('shoes');
+                addSubcategoryOption('nightDresses');
+                break;
+            case 'furniture':
+                addSubcategoryOption('kitchen');
+                addSubcategoryOption('livingRoom');
+                addSubcategoryOption('dining');
+                addSubcategoryOption('bedroom');
+                addSubcategoryOption('smartHome');
+                break;
+            case 'groceries':
+                addSubcategoryOption('dairyProducts');
+                addSubcategoryOption('fruits');
+                addSubcategoryOption('vegetables');
+                addSubcategoryOption('foodsAndDrinks');
+                break;
+            default:
+                break;
+            }
+        }
+
+        function addSubcategoryOption(subcategory) {
+            var subcategorySelect = document.getElementById('subcategory');
+            var option = document.createElement('option');
+            option.value = subcategory;
+            option.text = subcategory.charAt(0).toUpperCase() + subcategory.slice(1);
+            subcategorySelect.add(option);
+        }
+        </script>
+    </form>
+</div>
+<% include ../partials/footer.ejs %>

@@ -1,0 +1,23 @@
+<% include ./partials/header.ejs %>
+<div
+    class="w-full h-screen bg-no-repeat bg-center bg-cover bg-[url('/images/flat-mountains.svg')] flex items-center justify-center">
+    <div class="bg-zinc-100 w-[28vw] h-[60vh] px-12 py-10 rounded-[30px]">
+        <h1 class="text-3xl mb-3 tracking-tight text-center leading-none">Create New Account</h1>
+        <form action="/register" method="post">
+            <input class="border-2 mb-2 rounded-md block px-3 py-2 mt-2 w-full" type="text" name="name"
+                placeholder="Name">
+            <input class="border-2 mb-2 rounded-md block px-3 py-2 mt-2 w-full" type="text" name="username"
+                placeholder="Username">
+            <input class="border-2 mb-2 rounded-md block px-3 py-2 mt-2 w-full" type="email" name="email"
+                placeholder="Email">
+            <input class="border-2 mb-2 rounded-md block px-3 py-2 mt-2 w-full" type="tel" name="mobile"
+                placeholder="Phone Number">
+            <input class="border-2 mb-2 rounded-md block px-3 py-2 mt-2 w-full" type="password" name="password"
+                placeholder="Password">
+            <input class="border-2  block px-3 py-2 mt-2 w-full bg-red-600 text-white rounded-full cursor-pointer hover:bg-red-400" type="submit"
+                value="Register">
+        </form>
+        <a href="/login" class="w-full text-center inline-block mt-7">Already have an account?</a>
+    </div>
+</div>
+<% include ./partials/footer.ejs %>

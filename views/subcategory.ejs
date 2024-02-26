@@ -1,0 +1,25 @@
+<% include ./partials/header.ejs %>
+<div class="p-10">
+    <h1 class="text-3xl font-bold"><%= subcategory.charAt(0).toUpperCase() + subcategory.slice(1) %></h1>
+    <div class="flex flex-wrap gap-12">
+        <% products.forEach(product=>{ %>
+            <a href="/category/<%= category %>/<%= subcategory %>/<%= product._id %>">
+                <div class="cards flex flex-wrap gap-10 mt-5">
+                    <div class="relative card bg-slate-100 rounded-xl w-48 h-60 overflow-hidden" data-title="<%= product.name %>">
+                        <div class="absolute">
+                            <img class="w-full h-1/2 bg-cover" src="/images/uploads/<%= product.image %>">
+                        </div>
+                        <div class="pt-32 px-10">
+                            <h1 class="text-xl font-semibold pb-1"><%= product.name %></h1>
+                            <div class="absolute flex gap-4 pt-2 items-center justify-between">
+                                <h2 class="text-2xl font-bold">₹<%= product.price %></h2>
+                                <button><i class="fa-solid fa-cart-shopping fa-xl"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        <% }) %>
+    </div>
+</div>
+<% include ./partials/footer.ejs %>

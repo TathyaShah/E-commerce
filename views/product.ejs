@@ -1,0 +1,60 @@
+<% include ./partials/header.ejs %>
+<div class="bg-red-200 py-5">
+    <a href="/" class=" text-2xl px-4 py-4"><i class="fa-solid fa-arrow-left"></i></a>
+</div>
+<div class="flex flex-wrap gap-10 m-10 items-start">
+    <div class="shadow-lg shadow-black  h-[30rem] w-[28rem] rounded-3xl">
+        <img class="w-full h-full object-cover rounded-3xl" src="/images/uploads/<%= product.image %>">
+    </div>    
+    <div class=" w-2/5 h-[30rem] items-center justify-between py-2">
+        <h1 class="font-bold text-3xl pb-5"><%= product.name %></h1>
+        <h1 class="text-lg">Lorem ipsum dolor sit amet consec reprehenderit sit, facilis, quod dolores ratione officia unde culpa magnam perferendis.</h1>
+        <div class="py-4">
+            <form action="/rating" method="post">
+                <input type="hidden" name="category" value="<%= product.categories %>">
+                <input type="hidden" name="subcategory" value="<%= product.sub_categories %>">
+                <input type="hidden" name="productId" value="<%= product._id %>">
+                <% if(!userRating){ %>
+                    <% for(let j = 1 ; j < 6 ; j++){ %>
+                        <button onclick="this.form.submit()" value="<%= j %>" name="rating"><i class="fa-regular fa-star"></i></button>
+                    <% } %>
+                <% }else{ %>
+                    <% for(let j = 1 ; j < userRating+1 ; j++){ %>
+                        <button onclick="this.form.submit()" value="<%= j %>" name="rating"><i class="fa-solid fa-star" style="color: #FFD43B;"></i></button>
+                    <% } %>
+                    <% for(let j = userRating+1 ; j < 6 ; j++){ %>
+                        <button onclick="this.form.submit()" value="<%= j %>" name="rating"><i class="fa-regular fa-star"></i></button>
+                    <% } %>
+                <% } %>
+            </form>
+            <h2 class="font-semibold text-2xl pb-5 py-4">₹ <%= product.price %>.00</h2>
+        </div>
+        <div class="flex gap-5 items-center justify-between">
+            <form action="/cart/updates?productId=<%= product._id %>" method="post">
+                <input type="hidden" name="prod" value="<%= product._id %>">
+                <div class="flex gap-5 items-center justify-between">
+                    <h1 class="font-semibold text-lg mx-3">Quantity</h1>
+                    <select name="quantity" class="py-1 px-1 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-500">
+                        <% if(products){ %>
+                        <option value="" disabled selected><%= products.quantity %></option>
+                        <% } %>
+                        <% for (let j = 1; j <= 10; j++) { %>
+                            <option value="<%= j %>"><%= j %></option>
+                        <% } %>
+                    </select>
+                    <% if(products){ %>
+                        <button type="submit" class="bg-blue-700 text-sky-200 px-2 py-2 rounded-lg">Update Cart</button>
+                    <% }else{ %>
+                        <button type="submit" class="bg-blue-700 text-sky-200 px-2 py-2 rounded-lg">Add to Cart</button>
+                    <% } %>
+                </div>
+            </form>
+        </div>
+        <% if(products){ %>
+            <h1 class="font-semibold text-lg my-5 mx-3 text-green-600">Product already in the cart</h1>
+        <% } %>
+        <button class="w-full h-12 text-center my-16 bg-black text-white rounded-full">Buy This Product</button>
+    </div>
+</div>
+
+<% include ./partials/footer.ejs %>
